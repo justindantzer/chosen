@@ -160,6 +160,9 @@ class AbstractChosen
 
           option.search_text = if option.group then option.label else option.text
           option.search_match = this.search_string_match(option.search_text, regex)
+          valueMatch = this.value_string_match(option.value, searchText)
+          if(valueMatch)
+            option.search_match = true
           results += 1 if option.search_match and not option.group
 
           if option.search_match
@@ -196,7 +199,13 @@ class AbstractChosen
         for part in parts
           if regex.test part
             return true
-
+  
+  value_string_match: (value, search_string) ->
+    if search_string != ""
+      return if value.indexOf(search_string) > -1 then true else false
+    else
+      return false
+  
   choices_count: ->
     return @selected_option_count if @selected_option_count?
 
